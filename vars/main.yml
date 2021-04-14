@@ -1,4 +1,3 @@
 ---
 # vars file for webserver
 web_port: 80
-
