@@ -1,0 +1,31 @@
+---
+# tasks file for webserver
+ - name: Installing Apache web server
+   package:
+        name: "{{ item }}"
+        state: present
+   loop:
+        - httpd
+        - php 
+        - firewalld 
+ - name: Copy files to web server
+   template:
+           src: index.php.j2
+           dest: /var/www/html/index.php
+ - name: start firewalld service
+   service: 
+           name: firewalld
+           state: started
+
+ - name: Add Rules in Firewalls of web servers
+   firewalld:
+            port: "{{ web_port }}/tcp"
+            permanent: yes
+            state: enabled
+            immediate: yes
+
+ - name: Start Web server 
+   service:
+           name: httpd
+           state: started
+           enabled: yes
